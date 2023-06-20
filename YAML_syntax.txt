@@ -1,0 +1,62 @@
+YAML SYNTAX
+
+VALUES:
+
+Scalar values: (examples in brackets)
+  NUMBERS:
+    Integers            (1 5 78 0)
+    Floats              (12.34 .056 1.5E24)
+    Octal[0-7]          (04507 0723)
+    Hexidecimal[0-9a-f] (0xbeef 0x34)
+  BOOLEANS:
+    true false  # alternate casing options [ TRUE True ]
+    yes no
+    # possibly valid options in some circumstances (on off 0 1)
+  STRING:
+    unquoted collection of characters
+    "this is a string - still limited parsing"
+    'also a string - but this is literal'
+  STRING: >  # right-angle bracket for splitting long strings
+    this is a really long 
+    string that ansible 
+    regards as one 
+    continous string.
+  STRING: |  # pipe to indicate formatted string
+    Bob Scott
+    123 Long Street
+    Melbourne
+    VIC 3040
+  DATE:
+    ISO8601  (2022-07-19T14:25:23)  # not commonly used in Ansible plays
+  Null: or "no" value, also "~"
+Note: non string values that are quoted are treated as strings!
+
+LISTS:  # always treated as ordered, duplicate values are acceptable
+  - value
+  - value
+  - value
+  - value
+# alternate format; not recommended, but valid
+[value, value, value, ...]
+
+DICTs/MAPs:  # key/value pairs, not ordered, keys within dict must be unique
+  key3: value
+  key1: value
+  key2: value
+# alternate format; not recommended, but valid
+{key3: value, key1: value, key2: value, ...}
+
+==========================================================================================
+---  # marks beginning of YAML content; recommended at beginning of files
+...  # marks end of YAML content; not typically provided in files
+# for a comment, and blank lines are ignored
+
+Whitespace is extremely important to proper interpretation of the data structures.
+  'whitespace' must be space characters - no TABS or other non standard whitespace chars
+
+PLAYBOOK   # is a YAML file (optionally with .yml or .yaml) -- contains...
+- PLAYS    # a list of plays; recommend single play playbooks. see also 'import_playbook: '
+  - TASKS  # a list of tasks; see also 'pre_tasks:' 'post_tasks:' 'handlers:'
+    One module per task - nested module arguments
+    task options at same level
+  - ROLES  # a list of roles found on the library path
