@@ -3,4 +3,5 @@ git config --global user.email "valid@example.com"
 git config --global push.default simple
 git config --global credential.https://github.com.username snowolfe
 git config --global credential.helper cache --timeout=7200
-
+# Obtain a token for use as the password via the 
+# User/Settings/Developer settings/Personal Access tokens/Token
