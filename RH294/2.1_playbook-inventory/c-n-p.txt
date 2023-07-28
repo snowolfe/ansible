@@ -1,0 +1,32 @@
+# first line for each step is the navigator command
+# second entry is the ansible-core command
+# IF you modify the ansible.cfg file to set "inventory=inventory"
+# THEN yon can run each command without the "-i inventory" option
+
+#3.1
+ansible-navigator inventory -m stdout --list -i inventory 
+ansible-inventory --list -i inventory 
+
+#3.2
+ansible-navigator inventory -m stdout --graph ungrouped -i inventory
+ansible-inventory --graph ungrouped -i inventory
+
+#3.3
+ansible-navigator inventory -m stdout --graph development -i inventory
+ansible-inventory --graph development -i inventory
+
+#3.4
+ansible-navigator inventory -m stdout --graph testing -i inventory
+ansible-inventory --graph testing -i inventory
+
+#3.5
+ansible-navigator inventory -m stdout --graph production -i inventory
+ansible-inventory --graph production -i inventory
+
+#3.6
+ansible-navigator inventory -m stdout --graph us -i inventory
+ansible-inventory --graph us -i inventory
+
+#3.7
+ansible-navigator inventory -i inventory
+# no equivalent ansible-core command

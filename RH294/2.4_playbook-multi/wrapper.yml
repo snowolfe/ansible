@@ -1,0 +1,6 @@
+---
+- import_playbook: intranet.yml
+- import_playbook: test_web.yml
+# using import directives here - discussed in later chapter
+# provides same benefits of multiplay playbook; fact caching
+# and global variables

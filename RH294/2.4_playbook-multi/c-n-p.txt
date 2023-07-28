@@ -1,0 +1,22 @@
+# first line for each step is the navigator command
+# second entry is the ansible-core command
+
+# IMPORTANT: the playbook uses a collection that is not
+# installed on ansible-core; run the following to install it
+
+ansible-galaxy collection install ansible.posix
+
+# ansible-navigator (ee-supported-rhel8) does have it installed
+
+#9
+# this step is not necessary if you plan to run the playbook anyway
+# a syntax check happens as part of the first phase of running
+ansible-navigator run -m stdout wrapper.yml --syntax-check
+ansible-playbook wrapper.yml --syntax-check
+
+#10.1
+ansible-navigator run -m stdout wrapper.yml
+ansible-playbook wrapper.yml
+
+#10.2
+curl http://servera.lab.example.com

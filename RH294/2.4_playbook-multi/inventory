@@ -1,0 +1,16 @@
+[workstation]
+workstation.lab.example.com
+
+[servera]
+servera.lab.example.com
+
+# Added this host to show the benefit of test playbook
+# Use the custom_clean.yml to reverse intranet playbook
+[serverb]
+serverb.lab.example.com
+
+[web:children]
+servera
+serverb
+
+# modified format of inventory for consistency

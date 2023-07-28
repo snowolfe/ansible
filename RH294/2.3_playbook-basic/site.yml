@@ -1,0 +1,25 @@
+---
+- name: Install and start Apache HTTPD
+  hosts: web
+  # become in here instead of config file
+  become: true
+  # disable unnecessary fact gathering
+  gather_facts: false
+
+  tasks:
+    - name: httpd is present
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: initial content installed
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: /var/www/html
+
+    # using systemd instead of service
+    - name: httpd started and enabled
+      ansible.builtin.systemd:
+        name: httpd
+        state: started
+        enabled: true

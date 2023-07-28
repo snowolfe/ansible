@@ -1,0 +1,20 @@
+# first line for each step is the navigator command
+# second entry is the ansible-core command
+
+#4
+# this step is not necessary if you plan to run the playbook anyway
+# a syntax check happens as part of the first phase of running
+ansible-navigator run -m stdout site.yml --syntax-check
+ansible-playbook site.yml --syntax-check
+
+#5
+ansible-navigator run -m stdout site.yml
+ansible-playbook site.yml
+
+#6
+ansible-navigator run -m stdout site.yml
+ansible-playbook site.yml
+
+#7
+curl serverc.lab.example.com
+curl serverd.lab.example.com

@@ -1,0 +1,23 @@
+---
+- name: Disable intranet services
+  hosts: web
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: firewall reset to default
+      ansible.posix.firewalld:
+        service: http
+        immediate: true
+        permanent: true
+        state: disabled
+
+    - name: initial content removed
+      ansible.builtin.file:
+        path: /var/www/html/index.html
+        state: absent
+
+    - name: intranet services are removed
+      ansible.builtin.dnf:
+        name: httpd
+        state: absent

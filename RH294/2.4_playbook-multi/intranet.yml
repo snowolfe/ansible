@@ -1,0 +1,35 @@
+---
+- name: Enable intranet services
+  hosts: web
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: latest intranet services are installed
+      ansible.builtin.dnf:
+        name: 
+          - httpd
+          - firewalld
+        state: latest  # WARN: could result in packages updates
+
+    - name: initial content installed
+      ansible.builtin.copy:
+        content: "Welcome to the example.com intranet!\n"
+        dest: /var/www/html/index.html
+
+    - name: intranet services started and enabled
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      # introducing loop here - examined in a later chapter
+      loop:
+        - httpd
+        - firewalld
+
+    - name: firewall allows http access
+      ansible.posix.firewalld:
+        service: http
+        immediate: true
+        permanent: true
+        state: enabled

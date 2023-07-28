@@ -1,0 +1,32 @@
+# first line for each step is the navigator command
+# second entry is the ansible-core command
+
+#2.2
+ansible-navigator images
+# no equivalent ansible-core command
+
+#5.1
+ansible-navigator run -m stdout ping-myself.yml
+ansible-playbook ping-myself.yml
+
+#5.2
+ansible-navigator run -m stdout ping-intranetweb.yml
+ansible-playbook ping-intranetweb.yml
+
+#5.3
+ansible-navigator run -m stdout ping-internetweb.yml
+ansible-playbook ping-internetweb.yml
+
+#5.4
+ansible-navigator run -m stdout ping-web.yml
+ansible-playbook ping-web.yml
+
+#5.5
+ansible-navigator run -m stdout ping-all.yml
+ansible-playbook ping-all.yml
+
+#6 edit the ansible.cfg file and uncomment the "become" entries
+
+#7
+ansible-navigator run -m stdout ping-intranetweb.yml
+ansible-playbook ping-intranetweb.yml

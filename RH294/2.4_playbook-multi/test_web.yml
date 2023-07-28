@@ -1,0 +1,17 @@
+---
+- name: Test intranet web server access
+  hosts: web
+  become: false
+  gather_facts: true
+
+  tasks:
+    - name: verify intranet servers reachable
+      ansible.builtin.uri:
+        # introducing fact variable here - discussed in later chapter
+        url: http://{{ ansible_facts.fqdn }}
+        return_content: true
+        status_code: 200
+      delegate_to: workstation
+      # delegation not explicitly covered in this course
+      # task (uri in this case) runs on delegated host (workstation)
+      # instead of on the target host
