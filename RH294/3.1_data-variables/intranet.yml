@@ -8,17 +8,17 @@
     - vars/firewall.yml
 
   tasks:
-    - name: ensure intranet services are present
+    - name: latest intranet services are installed
       ansible.builtin.dnf:
         name: "{{ packages }}"
         state: latest
 
-    - name: install initial content
+    - name: initial content installed
       ansible.builtin.copy:
         content: "Example web content\n"
         dest: /var/www/html/index.html
 
-    - name: start and enable intranet services
+    - name: intranet services started and enabled
       ansible.builtin.systemd:
         name: "{{ item }}"
         state: started

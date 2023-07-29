@@ -1,3 +1,12 @@
 # first line for each step is the navigator command
 # second entry is the ansible-core command
 
+#9
+# this step is not necessary if you plan to run the playbook anyway
+# a syntax check happens as part of the first phase of running
+ansible-navigator run -m stdout wrapper.yml --syntax-check
+ansible-playbook wrapper.yml --syntax-check
+
+#10
+ansible-navigator run -m stdout wrapper.yml
+ansible-playbook wrapper.yml

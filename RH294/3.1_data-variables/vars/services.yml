@@ -1,2 +1,16 @@
 ---
-firewall_rule: http
+web_pkg: httpd
+firewall_pkg: firewalld
+python_pkg: python3-PyMySQL
+
+packages:
+  - "{{ web_pkg }}"
+  - "{{ firewall_pkg }}"
+  - "{{ python_pkg }}"
+
+web_service: httpd
+firewall_service: firewalld
+
+services:
+  - "{{ web_service }}"
+  - "{{ firewall_service }}"
