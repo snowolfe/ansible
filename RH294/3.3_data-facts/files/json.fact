@@ -1,0 +1,12 @@
+{
+  "package": [
+    "httpd",
+    "firewalld",
+    "mariadb-server"
+  ],
+  "service": {
+    "name": "httpd",
+    "state": "started",
+    "enabled": true
+  }
+}

@@ -1,0 +1,18 @@
+---
+- name: Install and start Apache
+  hosts: webserver
+  become: true
+  # gather facts via implicit gathering
+
+  tasks:
+    - name: install the required package
+      ansible.builtin.dnf:
+        # ansible_local does not need ansible_facts prefix
+        name: "{{ ansible_local.custom.general.package }}"
+        state: latest
+
+    - name: start the web server
+      ansible.builtin.service:
+        name: "{{ ansible_local.custom.general.service }}"
+        state: "{{ ansible_local.custom.general.state }}"
+        enabled: "{{ ansible_local.custom.general.enabled }}"

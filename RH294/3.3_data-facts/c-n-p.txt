@@ -1,0 +1,40 @@
+# first line for each step is the navigator command
+# second entry is the ansible-core command
+
+#2
+ansible-navigator run -m stdout display_facts.yml
+ansible-playbook display_facts.yml
+
+#3.2 & 4.2
+ansible-navigator run -m stdout display_specific_facts.yml
+ansible-playbook display_specific_facts.yml
+
+#5.1
+# use adhoc operations to setup the custom facts
+ansible webserver -m file -a 'path=/etc/ansible/facts.d state=directory recurse=true' -b -u devops
+ansible webserver -m copy -a 'dest=/etc/ansible/facts.d src=custom.fact' -b -u devops
+# install a json fact file for demo purposes
+ansible webserver -m copy -a 'dest=/etc/ansible/facts.d src=json.fact' -b -u devops
+
+#7
+# this step is not necessary if you plan to run the playbook anyway
+# a syntax check happens as part of the first phase of running
+ansible-navigator run -m stdout playbook.yml --syntax-check
+ansible-playbook playbook.yml --syntax-check
+
+#8.2
+# this step is expected to generate a failed server
+ansible-navigator run -m stdout check_httpd.yml
+ansible-playbook check_httpd.yml
+
+#9
+ansible-navigator run -m stdout playbook.yml
+ansible-playbook playbook.yml
+
+#10
+ansible-navigator run -m stdout check_httpd.yml
+ansible-playbook check_httpd.yml
+
+# WARNING: post lab finish the facts files appear to still be installed
+# run the following to remove using adhoc functionality
+#ansible webserver -m file -a 'path=/etc/ansible state=absent' -b -u devops
