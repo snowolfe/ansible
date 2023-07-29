@@ -1,0 +1,3 @@
+# first line for each step is the navigator command
+# second entry is the ansible-core command
+

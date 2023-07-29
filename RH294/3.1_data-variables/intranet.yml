@@ -1,0 +1,33 @@
+---
+- name: Enable intranet services
+  hosts: web
+  become: true
+  gather_facts: false
+  vars_files:
+    - vars/services.yml
+    - vars/firewall.yml
+
+  tasks:
+    - name: ensure intranet services are present
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
+        state: latest
+
+    - name: install initial content
+      ansible.builtin.copy:
+        content: "Example web content\n"
+        dest: /var/www/html/index.html
+
+    - name: start and enable intranet services
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop: "{{ services }}"
+
+    - name: firewall allows {{ firewall_rule }} access
+      ansible.posix.firewalld:
+        service: "{{ firewall_rule }}"
+        immediate: true
+        permanent: true
+        state: enabled

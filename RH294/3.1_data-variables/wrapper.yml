@@ -1,0 +1,3 @@
+---
+- import_playbook: intranet.yml
+- import_playbook: test_web.yml
