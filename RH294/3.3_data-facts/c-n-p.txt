@@ -37,4 +37,4 @@ ansible-playbook check_httpd.yml
 
 # WARNING: post lab finish the facts files appear to still be installed
 # run the following to remove using adhoc functionality
-#ansible webserver -m file -a 'path=/etc/ansible state=absent' -b -u devops
+ansible webserver -m file -a 'path=/etc/ansible state=absent' -b -u devops
