@@ -3,6 +3,7 @@
   hosts: web
   become: true
   gather_facts: false
+  # always externalise variables and use separate files if appropriate
   vars_files:
     - vars/services.yml
     - vars/firewall.yml

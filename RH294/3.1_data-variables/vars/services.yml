@@ -1,4 +1,7 @@
 ---
+# created the variables as defined in lab, but also the list variables
+# "packages" and "services"; the lab variables aren't strictly needed here
+
 web_pkg: httpd
 firewall_pkg: firewalld
 python_pkg: python3-PyMySQL
