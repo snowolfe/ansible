@@ -1,0 +1,13 @@
+---
+- name: Test internet web server access
+  hosts: web
+  become: false
+  gather_facts: true
+
+  tasks:
+    - name: verify internet servers reachable
+      ansible.builtin.uri:
+        url: http://{{ ansible_facts.fqdn }}
+        return_content: true
+        status_code: 200
+      delegate_to: workstation

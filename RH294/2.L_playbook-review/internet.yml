@@ -1,0 +1,39 @@
+---
+- name: Enable internet services
+  hosts: web
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: latest internet services are installed
+      ansible.builtin.dnf:
+        name: 
+          - httpd
+          - firewalld
+          - mariadb-server
+          - php
+          - php-mysqlnd
+        state: latest
+
+    - name: initial content installed
+      ansible.builtin.copy:
+        src: files/index.php
+        dest: /var/www/html
+        mode: 0644
+
+    - name: internet services started and enabled
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - httpd
+        - firewalld
+        - mariadb
+
+    - name: firewall allows http access
+      ansible.posix.firewalld:
+        service: http
+        immediate: true
+        permanent: true
+        state: enabled
