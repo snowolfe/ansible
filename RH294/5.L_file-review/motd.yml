@@ -1,0 +1,38 @@
+---
+- name: Configure the motd file
+  hosts: servers
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: motd is installed with current host data
+      ansible.builtin.template:
+        src: templates/motd.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: /etc/motd has been created
+      ansible.builtin.stat:
+        path: /etc/motd
+      register: stat_result
+
+    - name: display stat data
+      ansible.builtin.debug:
+        var: stat_result
+
+    - name: /etc/issue is installed
+      ansible.builtin.copy:
+        src: files/issue
+        dest: /etc/issue
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: symlink for /etc/issue.net exists
+      ansible.builtin.file:
+        path: /etc/issue.net
+        src: /etc/issue
+        state: link
+        force: true
