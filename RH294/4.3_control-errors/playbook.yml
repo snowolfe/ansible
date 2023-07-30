@@ -1,5 +1,5 @@
 ---
-- name: Task failure exercise - step 3
+- name: Task failure exercise
   hosts: databases
   become: true
   gather_facts: false
