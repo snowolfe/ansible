@@ -1,0 +1,26 @@
+---
+- name: Task failure exercise - step 8.2
+  hosts: databases
+  become: true
+  gather_facts: false
+  vars_files:
+    - vars/main_8.2.yml
+
+  tasks:
+    - name: attempt to set up webserver
+      block:
+        - name: "{{ web_package }} is present"
+          ansible.builtin.dnf:
+            name: "{{ web_package }}"
+            state: present
+      rescue:
+        - name: "{{ db_package }} is present"
+          ansible.builtin.dnf:
+            name: "{{ db_package }}"
+            state: present
+      always:
+        - name: "{{ db_service }} is started"
+          ansible.builtin.service:
+            name: "{{ db_service }}"
+            state: started
+

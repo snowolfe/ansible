@@ -1,0 +1,19 @@
+---
+- name: Task failure exercise - step 5
+  hosts: databases
+  become: true
+  gather_facts: false
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - name: "{{ web_package }} is present"
+      ansible.builtin.dnf:
+        name: "{{ web_package }}"
+        state: present
+      ignore_errors: true
+
+    - name: "{{ db_package }} is present"
+      ansible.builtin.dnf:
+        name: "{{ db_package }}"
+        state: present
