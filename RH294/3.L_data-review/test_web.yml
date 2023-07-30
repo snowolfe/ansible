@@ -1,0 +1,28 @@
+---
+- name: Test internet web server access
+  hosts: web
+  become: false
+  gather_facts: false  # assuming fact caching here!
+  vars_files:
+    - vars/secret.yml
+
+  tasks:
+    - name: gather facts
+      ansible.builtin.setup:
+      when: ansible_facts.fqdn is not defined
+
+    - name: verify internet servers reachable
+      ansible.builtin.uri:
+        url: https://{{ ansible_facts.fqdn }}/index.html
+        force_basic_auth: true
+        url_username: "{{ web.user }}"
+        url_password: "{{ web.pass }}"
+        validate_certs: false
+        return_content: true
+        status_code: 200
+      delegate_to: workstation.lab.example.com
+      register: auth_test
+
+    - name: show results
+      debug:
+        var: auth_test.content

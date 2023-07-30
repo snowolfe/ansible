@@ -1,0 +1,67 @@
+---
+- name: Enable internet services
+  hosts: web
+  become: true
+  gather_facts: true
+  vars_files:
+    - vars/services.yml
+    - vars/webconfig.yml
+
+  tasks:
+    - name: latest internet services are present
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
+        state: latest
+
+    - name: web config installed
+      ansible.builtin.copy:
+        src: "{{ httpdconf.src }}"
+        dest: "{{ httpdconf.dest }}"
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: secrets dir exists
+      ansible.builtin.file:
+        path: "{{ directories.secrets }}"
+        state: directory
+        owner: apache
+        group: apache
+        mode: 0500
+
+    - name: htpasswd file installed
+      ansible.builtin.copy:
+        src: "{{ secrets.passwd_src }}"
+        dest: "{{ secrets.dest }}"
+        owner: apache
+        group: apache
+        mode: 0400
+
+    - name: htaccess file installed
+      ansible.builtin.copy:
+        src: "{{ secrets.access_src }}"
+        dest: "{{ directories.content }}"
+        owner: apache
+        group: apache
+        mode: 0400
+
+    - name: initial content installed
+      ansible.builtin.copy:
+        content: >
+          {{ ansible_facts.fqdn }} ({{ ansible_facts.default_ipv4.address }})
+          has been customized by Ansible.
+        dest: "{{ directories.content }}/index.html"
+
+    - name: internet services started and enabled
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop: "{{ services }}"
+
+    - name: firewall allows https access
+      ansible.posix.firewalld:
+        service: https
+        immediate: true
+        permanent: true
+        state: enabled

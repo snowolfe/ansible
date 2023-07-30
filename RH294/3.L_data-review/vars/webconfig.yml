@@ -1,0 +1,14 @@
+---
+httpdconf:
+  src: files/httpd.conf
+  dest: "{{ directories.conf }}"
+
+directories:
+  conf: /etc/httpd/conf
+  secrets: /etc/httpd/secrets
+  content: /var/www/html
+
+secrets:
+  passwd_src: files/htpasswd
+  access_src: files/.htaccess
+  dest: "{{ directories.secrets }}"
