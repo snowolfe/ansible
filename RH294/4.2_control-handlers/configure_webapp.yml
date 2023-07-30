@@ -1,0 +1,47 @@
+---
+- name: Web application server is deployed
+  hosts: webapp
+  become: true
+  gather_facts: false
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - name: "{{ packages }} packages are installed"
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
+        state: present
+
+    - name: services are started and enabled
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop: "{{ services }}"
+
+    - name: "{{ web_config.dest }} file has been deployed"
+      ansible.builtin.copy:
+        src: "{{ web_config.src }}"
+        dest: "{{ web_config.dest }}"
+        force: true
+      notify:
+        - restart web service
+
+    - name: "{{ app_config.dest }} file has been deployed"
+      ansible.builtin.copy:
+        src: "{{ app_config.src }}"
+        dest: "{{ app_config.dest }}"
+        force: true
+      notify:
+        - restart app service
+
+  handlers:
+    - name: restart web service
+      ansible.builtin.service:
+        name: "{{ web_service }}"
+        state: restarted
+
+    - name: restart app service
+      ansible.builtin.service:
+        name: "{{ app_service }}"
+        state: restarted

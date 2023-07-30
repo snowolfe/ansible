@@ -1,0 +1,19 @@
+---
+packages:
+  - nginx
+  - php-fpm
+
+web_service: nginx
+app_service: php-fpm
+
+services:
+  - "{{ web_service }}"
+  - "{{ app_service }}"
+
+resources_dir: files
+web_config:
+  src: "{{ resources_dir }}/nginx.conf.standard"
+  dest: /etc/nginx/nginx.conf
+app_config:
+  src: "{{ resources_dir }}/php-fpm.conf.standard"
+  dest: /etc/php-fpm.conf

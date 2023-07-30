@@ -1,0 +1,21 @@
+---
+- name: MariaDB server is running
+  #hosts: database_dev
+  hosts: database_prod
+  become: true
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - name: mariadb packages are installed
+      ansible.builtin.dnf:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ mariadb_packages }}"
+      when: ansible_facts.distribution == "RedHat"
+
+    - name: mariadb service started and enabled
+      ansible.builtin.service:
+        name: mariadb
+        state: started
+        enabled: true
