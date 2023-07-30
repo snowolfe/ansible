@@ -1,0 +1,14 @@
+---
+- name: Using file module to ensure SELinux file context
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: SELinux file context is set to defaults
+      ansible.builtin.file:
+        path: /home/devops/users.txt
+        seuser: _default
+        serole: _default
+        setype: _default
+        selevel: _default

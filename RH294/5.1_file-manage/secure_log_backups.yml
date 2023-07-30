@@ -1,0 +1,12 @@
+---
+- name: Use fetch module to retrieve secure log files
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: fetch the secure logs
+      ansible.builtin.fetch:
+        src: /var/log/secure
+        dest: secure-backups
+        flat: false

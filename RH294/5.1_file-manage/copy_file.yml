@@ -1,0 +1,15 @@
+---
+- name: Using the copy module
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: copy a file to a managed host with attributes
+      ansible.builtin.copy:
+        src: files/users.txt
+        dest: /home/devops/users.txt
+        owner: devops
+        group: devops
+        mode: u+rw,g-wx,o-rwx #0640
+        setype: samba_share_t
