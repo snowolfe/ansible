@@ -1,0 +1,14 @@
+---
+- name: Schedule logrotate task
+  hosts: webservers
+  become: true
+  
+  tasks:
+    - name: create cron job for lograte
+      ansible.builtin.cron:
+        name: httpd logrotate job
+        cron_file: rotate_web
+        minute: 0
+        hour: 0
+        user: devops
+        job: logrotate -f /etc/logrotate.d/httpd

@@ -1,0 +1,6 @@
+---
+- name: HTTPD server is installed
+  hosts: webdev
+  become: true
+  roles:
+    - ansible-httpd

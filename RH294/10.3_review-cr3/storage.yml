@@ -1,0 +1,25 @@
+---
+- name: Create storage volumes
+  hosts: webservers
+  become: true
+
+  vars:
+    storage_pools:
+    - name: vg_web
+      type: lvm
+      disks:
+        - /dev/vdb
+      volumes:
+        - name: lv_content
+          size: 128M
+          fs_type: xfs
+          mount_point: /var/www/html/content
+          state: present
+        - name: lv_uploads
+          size: 256M
+          fs_type: xfs
+          mount_point: /var/www/html/uploads
+          state: present
+
+  roles:
+    - redhat.rhel_system_roles.storage

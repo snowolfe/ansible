@@ -1,0 +1,14 @@
+---
+- name: Configure eth1
+  hosts: webservers
+  become: true
+  vars:
+    network_connections:
+      - name: lab_eth1
+        interface_name: eth1
+        type: ethernet
+        ip:
+          address:
+            - "172.25.250.45/24"
+  roles:
+    - redhat.rhel_system_roles.network

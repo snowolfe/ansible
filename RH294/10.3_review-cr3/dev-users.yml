@@ -1,0 +1,24 @@
+---
+- name: Create webdev user
+  hosts: webservers
+  become: true
+  vars_files:
+    - pass-vault.yml
+
+  tasks:
+    - name: create user
+      ansible.builtin.user:
+        name: webdev
+        password: "{{ pwhash }}"
+        state: present
+
+    - name: webdev group has sudo privileges
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers.d/webdev
+        line: "%webdev  ALL=(ALL)  NOPASSWD:ALL"
+        create: true
+        owner: root
+        group: root
+        mode: 0644
+        validate: "/usr/sbin/visudo -cf %s"
+        state: present
