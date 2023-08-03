@@ -1,0 +1,47 @@
+---
+- name: Install and config the webserver
+  hosts: webservers
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: HTTPD is installed
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: HTTPD service is started and enabled
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: HTTPD config is installed
+      ansible.builtin.template:
+        src: templates/vhost.conf.j2
+        dest: /etc/httpd/conf.d/vhost.conf
+      notify: Restart httpd
+
+    - name: VHost directory exists
+      ansible.builtin.file:
+        path: /var/www/vhosts/{{ inventory_hostname_short }}
+        state: directory
+        recurse: true
+
+    - name: VHost initial content is installed
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: /var/www/vhosts/{{ inventory_hostname_short }}
+
+    - name: Firewall allows http access
+      ansible.posix.firewalld:
+        service: http
+        permanent: true
+        immediate: true
+        state: enabled
+
+  handlers:
+    - name: Restart httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted

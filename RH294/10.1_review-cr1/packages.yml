@@ -1,0 +1,21 @@
+---
+- name: Install packages
+  hosts: dev
+  become: true
+  gather_facts: true
+  vars:
+    packages:
+      - httpd
+      - mariadb-server
+
+  tasks:
+    - name: Install the required packages
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
+        state: latest
+
+    - name: Install the redis package when swap space > 10MB
+      ansible.builtin.dnf:
+        name: redis
+        state: latest
+      when: ansible_facts.swaptotal_mb > 10

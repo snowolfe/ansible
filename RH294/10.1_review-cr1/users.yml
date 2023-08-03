@@ -1,0 +1,14 @@
+---
+- name: Create users on managed servers
+  hosts: dev
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: users are present
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - joe
+        - sam
