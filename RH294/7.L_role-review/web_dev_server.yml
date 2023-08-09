@@ -1,0 +1,28 @@
+---
+- name: Config web dev server
+  hosts: dev_webserver
+  become: true
+  gather_facts: true
+  force_handlers: true
+
+  roles:
+    - apache.developer_configs
+
+  pre_tasks:
+    - block:
+        - name: include selinux
+          ansible.builtin.include_role:
+            name: redhat.rhel_system_roles.selinux
+      rescue:
+        - name: Handle general failure
+          ansible.builtin.fail:
+            msg: SELinux role failed unexpectedly
+          when: not selinux_reboot_required
+
+        - name: restart managed host
+          ansible.builtin.reboot:
+            msg: Ansible rebooting for SELinux updates
+
+        - name: include selinux again
+          ansible.builtin.include_role:
+            name: redhat.rhel_system_roles.selinux
