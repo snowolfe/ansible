@@ -1,0 +1,26 @@
+---
+- name: Use student.bash_env role playbook
+  hosts: devservers
+  become: true
+  gather_facts: false
+  vars:
+    default_prompt: '[\u on \h in \W dir]\$ '
+    prompt_color: blue
+
+  roles:
+    - student.bash_env
+
+  pre_tasks:
+    - name: Ensure test user does not exist
+      ansible.builtin.user:
+        name: student2
+        state: absent
+        force: true
+        remove: true
+
+  post_tasks:
+    - name: Create the test user
+      ansible.builtin.user:
+        name: student2
+        state: present
+        password: "{{ 'redhat' | password_hash('sha512', 'mysecretsalt') }}"
