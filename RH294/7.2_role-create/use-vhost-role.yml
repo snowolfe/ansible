@@ -1,0 +1,24 @@
+---
+- name: Use the myvhost role
+  hosts: webservers
+  become: true
+  gather_facts: true
+  vars_files:
+
+  roles:
+    - myvhost
+
+  pre_tasks:
+    - name: pre_task message
+      ansible.builtin.debug:
+        msg: Ensure web server configuration.
+
+  post_tasks:
+    - name: HTML content is installed
+      ansible.builtin.copy:
+        src: files/html/
+        dest: /var/www/vhosts/{{ ansible_hostname }}
+
+    - name: post_task message
+      ansible.builtin.debug:
+        msg: Web server is configured
