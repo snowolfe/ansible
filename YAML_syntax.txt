@@ -4,8 +4,8 @@ VALUES:
 
 Scalar values: (examples in brackets)
   NUMBERS:
-    Integers            (1 5 78 0)
-    Floats              (12.34 .056 1.5E24)
+    Integers            (1 5 -78 0)
+    Floats              (12.34 -0.056 1.5E24)
     Octal[0-7]          (04507 0723)
     Hexidecimal[0-9a-f] (0xbeef 0x34)
   BOOLEANS:
@@ -14,8 +14,8 @@ Scalar values: (examples in brackets)
     # possibly valid options in some circumstances (on off 0 1)
   STRING:
     unquoted collection of characters
-    "this is a string - still limited parsing"
-    'also a string - but this is literal'
+    "this is a string"
+    'also a string'
   STRING: >  # right-angle bracket for splitting long strings
     this is a really long 
     string that ansible 
